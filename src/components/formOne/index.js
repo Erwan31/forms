@@ -12,7 +12,8 @@ class FormOne extends Component {
                 config: {
                     name: 'name_input',
                     type: 'text',
-                    placeholder: 'Enter your name'
+                    placeholder: 'Enter your name',
+                    id: 'name_field'
                 },
                 validation: {
                     required: true,
@@ -20,7 +21,10 @@ class FormOne extends Component {
                 valid: false,
                 touched: false,
                 validationMessage: ''
-            }
+            },
+            lastname: {},
+            age: {},
+            message: {}
         }
     }
 
@@ -38,6 +42,20 @@ class FormOne extends Component {
         })
     }
 
+    updateForm = (element) => {
+       const newFormData = {
+            ...this.state.formData
+        };
+
+        const newElement = { 
+            ...newFormData[element.id]
+        };
+
+        newElement.value = element.event.target.value;
+        newFormData[element.id] = newElement;
+
+        this.setState({ formData: newFormData});
+    }
 
     render(){
         return(
@@ -45,11 +63,20 @@ class FormOne extends Component {
                 <form>
                     <div className="form-group">
                         <label>Name</label>
-                        <input 
+                        <FormField
+                            formData={this.state.formData.name}
+                            id="name"
+                            change={ (element) => this.updateForm(element)}
+                        />
+                        {/*
+                           <input 
                             type="text"
                             className="form-control"
                             name="name_input"
-                        />
+                            />
+                            */ 
+                        }
+                        
                     </div>
                     <div className="form-group">
                         <label>Lastname</label>

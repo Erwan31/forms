@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FormField = ({formData}) => {
+const FormField = ({formData, change, id}) => {
 
     const renderTemplate = () => {
         let formTemplate = null;
@@ -8,7 +8,13 @@ const FormField = ({formData}) => {
         switch(formData.element){
             case('input'):
                 formTemplate = (
-                    <input type="text"/>
+                    <input 
+                        {...formData.config}
+                        value={formData.value}
+                        onBlur={ (event) => change({event, id})}
+                        onChange={ (event) => change({event, id})}
+                        className="form-control"
+                    />
                 )
             break;
 
