@@ -1,5 +1,6 @@
 import React,{ Component } from 'react';
 import FormField from '../../utils/formFields';
+import { validate } from './../../utils/validate';
 
 class FormOne extends Component {
 
