@@ -52,8 +52,16 @@ class FormOne extends Component {
             ...newFormData[element.id]
         };
 
+        // check for validation
+        let validationData = validate(newElement);
+        newElement.valid = validationData[0];
+        newElement.validationMessage = validationData[1];
+
+        // update form after getting new controlled value
         newElement.value = element.event.target.value;
         newFormData[element.id] = newElement;
+
+        console.log(newElement);
 
         this.setState({ formData: newFormData});
     }
