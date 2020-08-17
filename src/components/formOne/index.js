@@ -3,7 +3,38 @@ import React,{ Component } from 'react';
 class FormOne extends Component {
 
     state = {
-        maxAge:80
+        maxAge:81,
+        formData: {
+            name:{
+                element:'input',
+                value: '',
+                config: {
+                    name: 'name_input',
+                    type: 'text',
+                    placeholder: 'Enter your name'
+                },
+                validation: {
+                    required: true,
+                },
+                valid: false,
+                touched: false,
+                validationMessage: ''
+            }
+        }
+    }
+
+    generateOptions = () => {
+        const ageArray = [];
+
+        for(let i = 0; i < this.state.maxAge; i++){
+            ageArray.push(i);
+        }
+
+        return ageArray.map( (value, i) => {
+            return(
+                <option key={i} value={value}>{value}</option>
+            )
+        })
     }
 
 
@@ -33,7 +64,7 @@ class FormOne extends Component {
                             name="age_input"
                             className="form-control" 
                         >
-                           
+                        {this.generateOptions()}
                         </select>
                     </div>
                     
