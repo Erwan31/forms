@@ -14,7 +14,6 @@ class FormOne extends Component {
                     name: 'name_input',
                     type: 'text',
                     placeholder: 'Enter your name',
-                    id: 'name_field'
                 },
                 validation: {
                     required: true,
@@ -23,9 +22,51 @@ class FormOne extends Component {
                 touched: false,
                 validationMessage: ''
             },
-            lastname: {},
-            age: {},
-            message: {}
+            lastname: {
+                element:'input',
+                value: '',
+                config: {
+                    name: 'lastname_input',
+                    type: 'text',
+                    placeholder: 'Enter your lastname',
+                },
+                validation: {
+                    required: true,
+                },
+                valid: false,
+                touched: false,
+                validationMessage: ''
+            },
+            age: {
+                element:'select',
+                value: '',
+                config: {
+                    name: 'age_input',
+                    type: 'text',
+                },
+                validation: {
+                    required: true,
+                    minNum: 20,
+                },
+                valid: false,
+                touched: false,
+                validationMessage: ''
+            },
+            message: {
+                element:'textarea',
+                value: '',
+                config: {
+                    name: 'meassage_input',
+                    placeholder: 'Add your message here...',
+                    rows: 3,
+                },
+                validation: {
+                    required: true,
+                },
+                valid: false,
+                touched: false,
+                validationMessage: ''
+            }
         }
     }
 
@@ -57,6 +98,11 @@ class FormOne extends Component {
         newElement.valid = validationData[0];
         newElement.validationMessage = validationData[1];
 
+        // catch blur
+        if(element.blur){
+            newElement.touched = element.blur;
+        }
+
         // update form after getting new controlled value
         newElement.value = element.event.target.value;
         newFormData[element.id] = newElement;
@@ -76,42 +122,37 @@ class FormOne extends Component {
                             formData={this.state.formData.name}
                             id="name"
                             change={ (element) => this.updateForm(element)}
-                        />
-                        {/*
-                           <input 
-                            type="text"
-                            className="form-control"
-                            name="name_input"
-                            />
-                            */ 
-                        }
-                        
+                        />  
                     </div>
                     <div className="form-group">
                         <label>Lastname</label>
-                        <input 
-                            type="text"
-                            className="form-control"
-                            name="lastname_input"
-                        />
+                        <FormField
+                            formData={this.state.formData.lastname}
+                            id="lastname"
+                            change={ (element) => this.updateForm(element)}
+                        />  
                     </div>
                     <div className="form-group">
                         <label>Age</label>
-                        <select
-                            name="age_input"
-                            className="form-control" 
+                        <FormField
+                            formData={this.state.formData.age}
+                            id="age"
+                            change={ (element) => this.updateForm(element)}
                         >
-                        {this.generateOptions()}
-                        </select>
+                            <option value="">Select Age</option>
+                            {this.generateOptions()}
+                        </FormField>
+                        
                     </div>
                     
                     <div className="form-group">
                         <label>Enter your message here</label>
-                        <textarea 
-                            rows="3"
-                            placeholder="Add your message here..."
-                            className="form-control"
-                        ></textarea>
+                        <FormField
+                            formData={this.state.formData.message}
+                            id="message"
+                            change={ (element) => this.updateForm(element)}
+                        >
+                        </FormField>
                     </div>
                     
                     <button 
