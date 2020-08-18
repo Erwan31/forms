@@ -6,6 +6,7 @@ class FormOne extends Component {
 
     state = {
         maxAge:81,
+        loading: false,
         formData: {
             name:{
                 element:'input',
@@ -110,6 +111,48 @@ class FormOne extends Component {
         console.log(newElement);
 
         this.setState({ formData: newFormData});
+    }
+
+    submitForm = (event) => {
+        event.preventDefault();
+
+        let dataToSubmit = {};
+        let formIsValid = true;
+
+        this.setState({loading: true});
+
+        for( let key in this.state.formData){
+            formIsValid = this.state.formData[key].valid && formIsValid;        
+        }
+
+        if(formIsValid){
+            for(let key in this.state.formData){
+                dataToSubmit[key] = this.state.formData[key].value;
+            }
+            console.log("submit form with ", dataToSubmit);
+            setTimeout( () => {
+                this.setState({loading: false});
+                this.onSuccess();
+            }, 2000);
+        }
+        else{
+            alert('sorry the form is not valid');
+        }
+    }
+
+    onSuccess = () => {
+        let formDataCopy = {
+            ...this.state.formData
+        };
+
+        for( let key in this.state.formData){
+            formDataCopy[key].value = '';
+            formDataCopy[key].valid = false;
+            formDataCopy[key].touched = false;
+        }
+
+        this.setState({ formData: formDataCopy});
+        alert('Tks we will reach you back!!');
     }
 
     render(){
