@@ -25,6 +25,35 @@ class FormTwo extends Component {
         return(
             <Formik
                 initialValues={{ name: '', lastname: '', age:'', message:''}}
+                validate={ values => {
+                    let errors = {};
+
+                    if(!values.name){
+                        errors.name = "Sorry the error is required!!";
+                    }
+
+                    if(!values.lastname){
+                        errors.lastname = "Sorry the error is required!!";
+                    }
+
+                    if(values.age){
+                        if(values.age <= 20){
+                            errors.age = "Sorry the minimum is 20...";
+                        }
+                    }
+                    else{
+                        errors.age = "Sorry the error is required!!";
+                    }
+
+                    if(!values.message){
+                        errors.message = "Sorry the error is required!!";
+                    }
+
+                    return errors;
+                }}
+                onSubmit= { values => {
+                    //submit to server
+                }}
             >
                 {
                     ({values,
@@ -35,7 +64,7 @@ class FormTwo extends Component {
                         handleSubmit,
                         isSubmitting,
                     }) => (
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label>Name</label>
                                 <input 
@@ -46,6 +75,10 @@ class FormTwo extends Component {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
+                                {errors.name && touched.name ? 
+                                <div>{errors.name}</div>
+                                :null
+                                }
                             </div>
                             <div className="form-group">
                                 <label>Lastname</label>
@@ -57,6 +90,11 @@ class FormTwo extends Component {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
+                                {
+                                    errors.lastname && touched.lastname ? 
+                                    <div>{errors.lastname}</div>
+                                    :null
+                                }
                             </div>
                             <div className="form-group">
                                 <label>Age</label>
@@ -69,7 +107,11 @@ class FormTwo extends Component {
                                 >
                                 {this.generateOptions()}
                                 </select>
-                                
+                                {
+                                    errors.age && touched.age ? 
+                                    <div>{errors.age}</div>
+                                    :null
+                                }
                             </div>
                             
                             <div className="form-group">
@@ -83,6 +125,11 @@ class FormTwo extends Component {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 ></textarea>
+                                {
+                                    errors.message && touched.message ? 
+                                    <div>{errors.message}</div>
+                                    :null
+                                }
                             </div>
                             
                             <button 
