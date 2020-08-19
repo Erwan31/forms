@@ -1,11 +1,20 @@
 import React,{ Component } from 'react';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 class FormTwo extends Component {
 
     state = {
-        maxAge:80
+        maxAge:80,
+        submitting: false,
     }
+
+    myFormsSchema = Yup.object().shape({
+        name: Yup.string().required('This item is required'),
+        lastname: Yup.string().required('This item is required'),
+        age: Yup.number().min(20, 'Sorry the minimum is 20').required('This item is required'),
+        message: Yup.string().required('This item is required'),
+    })
 
     generateOptions = () => {
         const ageArray = [];
@@ -25,7 +34,8 @@ class FormTwo extends Component {
         return(
             <Formik
                 initialValues={{ name: '', lastname: '', age:'', message:''}}
-                validate={ values => {
+                validationSchema={this.myFormsSchema}
+ /*               validate={ values => {
                     let errors = {};
 
                     if(!values.name){
@@ -50,9 +60,17 @@ class FormTwo extends Component {
                     }
 
                     return errors;
-                }}
-                onSubmit= { values => {
+                }
+            }*/
+                onSubmit= { (values, {resetForm}) => {
+                    this.setState({submitting: true});
                     //submit to server
+                    setTimeout( () =>{ 
+                        console.log(values);
+                        resetForm();
+                        this.setState({submitting: false});
+                    }, 2000);
+                    
                 }}
             >
                 {
@@ -62,7 +80,6 @@ class FormTwo extends Component {
                         handleChange,
                         handleBlur,
                         handleSubmit,
-                        isSubmitting,
                     }) => (
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
@@ -135,8 +152,7 @@ class FormTwo extends Component {
                             <button 
                                 type="submit"
                                 className="btn btn-primary"
-                                onClick={(event)=>this.submitForm(event)}
-                                disabled={this.state.loading}
+                                disabled={this.state.submitting}
                             >
                                 Submit
                             </button>
